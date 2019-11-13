@@ -5,6 +5,8 @@ import javax.swing.JButton;
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class FormPanel extends JPanel {
 
@@ -13,6 +15,8 @@ public class FormPanel extends JPanel {
     private JTextField nameField;
     private JTextField occupationField;
     private JButton submit;
+
+    private FormListener formListener;
 
     public FormPanel() {
         Dimension dim = getPreferredSize();
@@ -74,5 +78,22 @@ public class FormPanel extends JPanel {
         gc.anchor = GridBagConstraints.FIRST_LINE_START;
         add(submit, gc);
 
+        submit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String name = nameField.getText();
+                String occupation = occupationField.getText();
+                FormEvent event = new FormEvent(this, name, occupation);
+
+                if (formListener != null) {
+                    formListener.formEventOccurred(event);
+                }
+
+            }
+        });
+
+    }
+
+    public void setFormListener(FormListener listener) {
+        this.formListener = listener;
     }
 }

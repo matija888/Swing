@@ -28,6 +28,12 @@ public class MainFrame extends JFrame {
             }
         });
 
+        formPanel.setFormListener(new FormListener() {
+            public void formEventOccurred(FormEvent event) {
+                textPanel.appendText(event.getName());
+            }
+        });
+
         // add components to the frame
         add(formPanel, BorderLayout.WEST);
         add(toolbar, BorderLayout.NORTH);
