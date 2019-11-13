@@ -8,7 +8,11 @@ public class Toolbar extends JPanel implements ActionListener {
     private JButton helloBtn;
     private JButton goodbyeBtn;
 
-    private TextPanel textPanel;
+    private StringListener stringListener;
+
+    public void setStringListener(StringListener stringListener) {
+        this.stringListener = stringListener;
+    }
 
     public Toolbar() {
         helloBtn = new JButton("Hello");
@@ -28,13 +32,13 @@ public class Toolbar extends JPanel implements ActionListener {
         JButton clickedBtn = (JButton) e.getSource();
 
         if (clickedBtn == helloBtn) {
-            textPanel.appendText("Hello btn is clicked\n");
+            if (stringListener != null) {
+                stringListener.textEmitted("Hello btn is clicked.\n");
+            }
         } else if (clickedBtn == goodbyeBtn) {
-            textPanel.appendText("Goodbye btn is clicked\n");
+            if (stringListener != null) {
+                stringListener.textEmitted("Goodbye btn is clicked.\n");
+            }
         }
-    }
-
-    public void setTextPanel(TextPanel textPanel) {
-        this.textPanel = textPanel;
     }
 }

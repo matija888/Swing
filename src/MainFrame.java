@@ -20,7 +20,11 @@ public class MainFrame extends JFrame {
         // set Layout for main frame
         setLayout(new BorderLayout());
 
-        toolbar.setTextPanel(textPanel);
+        toolbar.setStringListener(new StringListener() {
+            public void textEmitted(String text) {
+                textPanel.appendText(text);
+            }
+        });
 
         // add components to the frame
         add(toolbar, BorderLayout.NORTH);
