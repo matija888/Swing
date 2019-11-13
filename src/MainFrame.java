@@ -9,6 +9,7 @@ public class MainFrame extends JFrame {
 
     private Toolbar toolbar;
     private TextPanel textPanel;
+    private FormPanel formPanel;
 
     public MainFrame() {
         super("Hello");
@@ -16,6 +17,7 @@ public class MainFrame extends JFrame {
         // instatiate new components
         toolbar = new Toolbar();
         textPanel = new TextPanel();
+        formPanel = new FormPanel();
 
         // set Layout for main frame
         setLayout(new BorderLayout());
@@ -27,6 +29,7 @@ public class MainFrame extends JFrame {
         });
 
         // add components to the frame
+        add(formPanel, BorderLayout.WEST);
         add(toolbar, BorderLayout.NORTH);
         add(textPanel, BorderLayout.CENTER);
 
