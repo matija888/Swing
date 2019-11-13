@@ -30,7 +30,9 @@ public class MainFrame extends JFrame {
 
         formPanel.setFormListener(new FormListener() {
             public void formEventOccurred(FormEvent event) {
-                textPanel.appendText(event.getName());
+                String msgOutput = "Name: " + event.getName() + "; Occupation: " + event.getOccupation()
+                        + "; " + event.getAgeCategory() + "\n";
+                textPanel.appendText(msgOutput);
             }
         });
 

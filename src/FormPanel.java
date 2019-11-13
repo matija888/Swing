@@ -1,8 +1,4 @@
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.BorderFactory;
+import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,6 +11,7 @@ public class FormPanel extends JPanel {
     private JTextField nameField;
     private JTextField occupationField;
     private JButton submit;
+    private JList ageList;
 
     private FormListener formListener;
 
@@ -71,9 +68,29 @@ public class FormPanel extends JPanel {
         gc.weightx = 1;
         gc.weighty = 1;
 
-        submit = new JButton("Submit");
+        ageList = new JList();
+        DefaultListModel ageModel = new DefaultListModel();
+        ageModel.addElement(new AgeCategory(1, "Under 18"));
+        ageModel.addElement(new AgeCategory(2, "18 ot 65"));
+        ageModel.addElement(new AgeCategory(3, "65 or over"));
+        ageList.setModel(ageModel);
+        ageList.setPreferredSize(new Dimension(110, 70));
+        ageList.setBorder(BorderFactory.createEtchedBorder());
+        ageList.setSelectedIndex(2);
+
         gc.gridx = 1;
         gc.gridy = 2;
+        gc.insets = new Insets(0, 0,0,0);
+        gc.anchor = GridBagConstraints.FIRST_LINE_START;
+        add(ageList, gc);
+
+        ////////////////////////// FOURTH ROW //////////////////////////
+        gc.weightx = 1;
+        gc.weighty = 1;
+
+        submit = new JButton("Submit");
+        gc.gridx = 1;
+        gc.gridy = 3;
         gc.insets = new Insets(0, 0,0,0);
         gc.anchor = GridBagConstraints.FIRST_LINE_START;
         add(submit, gc);
@@ -82,7 +99,10 @@ public class FormPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String name = nameField.getText();
                 String occupation = occupationField.getText();
-                FormEvent event = new FormEvent(this, name, occupation);
+                AgeCategory ageCat = (AgeCategory) ageList.getSelectedValue();
+                int ageCatId = ageCat.getId();
+
+                FormEvent event = new FormEvent(this, name, occupation, ageCatId);
 
                 if (formListener != null) {
                     formListener.formEventOccurred(event);
@@ -95,5 +115,24 @@ public class FormPanel extends JPanel {
 
     public void setFormListener(FormListener listener) {
         this.formListener = listener;
+    }
+}
+
+class AgeCategory {
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    private String text;
+    public AgeCategory(int id, String text) {
+        this.id = id;
+        this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        return text;
     }
 }
