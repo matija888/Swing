@@ -12,6 +12,14 @@ public class FormPanel extends JPanel {
     private JTextField occupationField;
     private JButton submit;
     private JList ageList;
+    private JComboBox comboBox;
+    private JCheckBox checkCitizenship;
+    private JLabel taxIdLabel;
+    private JTextField taxIdField;
+    private JRadioButton maleGender;
+    private JRadioButton femaleGender;
+    private ButtonGroup genderGroup;
+    private JLabel genderLabel;
 
     private FormListener formListener;
 
@@ -24,6 +32,48 @@ public class FormPanel extends JPanel {
         Border outerBorder = BorderFactory.createEmptyBorder(5,5,5,5);
         setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
 
+        layoutComponents();
+
+        submit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String name = nameField.getText();
+                String occupation = occupationField.getText();
+                AgeCategory ageCat = (AgeCategory) ageList.getSelectedValue();
+                EmployeeCategory empoloyeeCategory = (EmployeeCategory) comboBox.getSelectedItem();
+
+                String genderCommand = genderGroup.getSelection().getActionCommand();
+
+                int ageCatId = ageCat.getId();
+                int employeeCat = empoloyeeCategory.getId();
+
+                FormEvent event = new FormEvent(this, name, occupation, ageCatId, employeeCat, genderCommand);
+
+                if (formListener != null) {
+                    formListener.formEventOccurred(event);
+                }
+
+            }
+        });
+
+        // disable zip code field until user check checkbox
+        disableZipCodeFields();
+
+        checkCitizenship.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                boolean isChecked = checkCitizenship.isSelected();
+                taxIdLabel.setEnabled(isChecked);
+                taxIdField.setEnabled(isChecked);
+            }
+        });
+
+    }
+
+    public void disableZipCodeFields() {
+        taxIdLabel.setEnabled(false);
+        taxIdField.setEnabled(false);
+    }
+
+    public void layoutComponents() {
         setLayout(new GridBagLayout());
         GridBagConstraints gc = new GridBagConstraints();
 //        gc.fill = GridBagConstraints.NONE;
@@ -84,33 +134,109 @@ public class FormPanel extends JPanel {
         gc.anchor = GridBagConstraints.FIRST_LINE_START;
         add(ageList, gc);
 
-        ////////////////////////// FOURTH ROW //////////////////////////
+        ////////////////////////// COMBO BOX ROW //////////////////////////
+        gc.weightx = 1;
+        gc.weighty = 1;
+
+        comboBox = new JComboBox();
+        DefaultComboBoxModel comboModel = new DefaultComboBoxModel();
+        comboModel.addElement(new EmployeeCategory(1, "unemployed"));
+        comboModel.addElement(new EmployeeCategory(2, "self-employed"));
+        comboModel.addElement(new EmployeeCategory(3, "employed"));
+        comboBox.setModel(comboModel);
+        comboBox.setPreferredSize(new Dimension(110, 25));
+        comboBox.setBorder(BorderFactory.createEtchedBorder());
+        comboBox.setSelectedIndex(2);
+
+        gc.gridx = 1;
+        gc.gridy = 3;
+        gc.insets = new Insets(0, 0,0,0);
+        gc.anchor = GridBagConstraints.FIRST_LINE_START;
+        add(comboBox, gc);
+
+        ////////////////////////// CITIZENSHIP ROW //////////////////////////
+        gc.weightx = 1;
+        gc.weighty = 0.1;
+
+        nameLabel = new JLabel("US Citizen: ");
+        gc.gridx = 0;
+        gc.gridy = 4;
+        gc.insets = new Insets(0, 0,0,5);
+        gc.anchor = GridBagConstraints.LINE_END;
+        add(nameLabel, gc);
+
+        checkCitizenship = new JCheckBox();
+        gc.gridx = 1;
+        gc.gridy = 4;
+        gc.insets = new Insets(0, 0,0,0);
+        gc.anchor = GridBagConstraints.LINE_START;
+        add(checkCitizenship, gc);
+
+        ////////////////////////// ZIP CODE ROW //////////////////////////
+        gc.weightx = 1;
+        gc.weighty = 0.1;
+
+        taxIdLabel = new JLabel("Tax ID: ");
+        gc.gridx = 0;
+        gc.gridy = 5;
+        gc.insets = new Insets(0, 0,0,5);
+        gc.anchor = GridBagConstraints.LINE_END;
+        add(taxIdLabel, gc);
+
+        taxIdField = new JTextField(10);
+        gc.gridx = 1;
+        gc.gridy = 5;
+        gc.insets = new Insets(0, 0,0,0);
+        gc.anchor = GridBagConstraints.LINE_START;
+        add(taxIdField, gc);
+
+        ////////////////////////// GENDER BUTTONS GROUP //////////////////////////
+        genderGroup = new ButtonGroup();
+        maleGender = new JRadioButton("Male");
+        maleGender.setActionCommand("male");
+
+        femaleGender = new JRadioButton("Female");
+        femaleGender.setActionCommand("female");
+        genderGroup.add(maleGender);
+        genderGroup.add(femaleGender);
+
+        ////////////////////////// MALE GENDER RADIO BUTTON ROW //////////////////////////
+        gc.weightx = 1;
+        gc.weighty = 0.1;
+
+        genderLabel = new JLabel("Gender: ");
+        gc.gridx = 0;
+        gc.gridy = 6;
+        gc.insets = new Insets(0, 0,0,5);
+        gc.anchor = GridBagConstraints.LINE_END;
+        add(genderLabel, gc);
+
+        gc.gridx = 1;
+        gc.gridy = 6;
+        gc.insets = new Insets(0, 0,0,0);
+        gc.anchor = GridBagConstraints.LINE_START;
+        add(maleGender, gc);
+
+        ////////////////////////// MALE GENDER RADIO BUTTON ROW //////////////////////////
+        gc.weightx = 1;
+        gc.weighty = 0.1;
+
+        gc.gridx = 1;
+        gc.gridy = 7;
+        gc.insets = new Insets(0, 0,0,0);
+        gc.anchor = GridBagConstraints.LINE_START;
+        add(femaleGender, gc);
+
+        ////////////////////////// SUBMIT ROW //////////////////////////
         gc.weightx = 1;
         gc.weighty = 1;
 
         submit = new JButton("Submit");
         gc.gridx = 1;
-        gc.gridy = 3;
+        gc.gridy = 8;
         gc.insets = new Insets(0, 0,0,0);
         gc.anchor = GridBagConstraints.FIRST_LINE_START;
         add(submit, gc);
-
-        submit.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String name = nameField.getText();
-                String occupation = occupationField.getText();
-                AgeCategory ageCat = (AgeCategory) ageList.getSelectedValue();
-                int ageCatId = ageCat.getId();
-
-                FormEvent event = new FormEvent(this, name, occupation, ageCatId);
-
-                if (formListener != null) {
-                    formListener.formEventOccurred(event);
-                }
-
-            }
-        });
-
     }
 
     public void setFormListener(FormListener listener) {
@@ -132,6 +258,36 @@ class AgeCategory {
     }
 
     @Override
+    public String toString() {
+        return text;
+    }
+}
+
+class EmployeeCategory {
+    private int id;
+    private String text;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public EmployeeCategory(int id, String text) {
+        this.id = id;
+        this.text = text;
+    }
+
     public String toString() {
         return text;
     }
