@@ -46,7 +46,13 @@ public class MainFrame extends JFrame {
 
         exit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                String msg = "Do you really want to exit the application?";
+                String title = "Confirm exit";
+                int cancelOption = JOptionPane.CANCEL_OPTION;
+                int action = JOptionPane.showConfirmDialog(MainFrame.this, msg, title, cancelOption);
+                if (action == JOptionPane.OK_OPTION) {
+                    System.exit(0);
+                }
             }
         });
 
