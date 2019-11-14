@@ -1,6 +1,7 @@
 package model;
+import java.io.Serializable;
 
-public class Person {
+public class Person implements Serializable {
     private static int count = 0;
 
     private int id;

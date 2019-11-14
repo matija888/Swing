@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 public class MainFrame extends JFrame {
 
@@ -68,7 +69,26 @@ public class MainFrame extends JFrame {
         importData.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
-                    System.out.println(fileChooser.getSelectedFile());
+                    try {
+                        controller.loadFromFile(fileChooser.getSelectedFile());
+                        tablePanel.refresh();
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(MainFrame.this,
+                                "Could not load data from file.","Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        });
+
+        exportData.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        controller.saveToFile(fileChooser.getSelectedFile());
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(MainFrame.this,
+                                "Could not save data to file.","Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         });
