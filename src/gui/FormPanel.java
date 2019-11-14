@@ -1,3 +1,5 @@
+package gui;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -52,8 +54,9 @@ public class FormPanel extends JPanel {
 
                 int ageCatId = ageCat.getId();
                 int employeeCat = empoloyeeCategory.getId();
+                boolean isCitizen = checkCitizenship.isSelected();
 
-                FormEvent event = new FormEvent(this, name, occupation, ageCatId, employeeCat, genderCommand);
+                FormEvent event = new FormEvent(this, name, occupation, ageCatId, employeeCat, genderCommand, isCitizen);
 
                 if (formListener != null) {
                     formListener.formEventOccurred(event);

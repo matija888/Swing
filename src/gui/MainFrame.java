@@ -1,5 +1,9 @@
+package gui;
+
+import controller.Controller;
+
 import javax.swing.*;
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -9,6 +13,9 @@ public class MainFrame extends JFrame {
     private Toolbar toolbar;
     private TextPanel textPanel;
     private FormPanel formPanel;
+    private JFileChooser fileChooser;
+
+    private Controller controller;
 
     private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
@@ -56,6 +63,14 @@ public class MainFrame extends JFrame {
             }
         });
 
+        importData.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
+                    System.out.println(fileChooser.getSelectedFile());
+                }
+            }
+        });
+
         return menuBar;
     }
 
@@ -66,6 +81,11 @@ public class MainFrame extends JFrame {
         toolbar = new Toolbar();
         textPanel = new TextPanel();
         formPanel = new FormPanel();
+
+        controller = new Controller();
+
+        fileChooser = new JFileChooser();
+        fileChooser.addChoosableFileFilter(new PersonFileFilter());
 
         setJMenuBar(createMenuBar());
 
@@ -83,6 +103,7 @@ public class MainFrame extends JFrame {
                 String msgOutput = "Name: " + event.getName() + "; Occupation: " + event.getOccupation()
                         + "; Age category: " + event.getAgeCategory() + "; Employee category: "
                         + event.getEmpoloyeeCategory() + "; Gender: " + event.getGender() + "\n";
+                System.out.println("isUSCitizen: " + event.isUsCitizen());
                 textPanel.appendText(msgOutput);
             }
         });
@@ -92,6 +113,7 @@ public class MainFrame extends JFrame {
         add(textPanel, BorderLayout.CENTER);
         add(toolbar, BorderLayout.NORTH);
 
+        setMinimumSize(new Dimension(500, 400));
         setSize(600, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
