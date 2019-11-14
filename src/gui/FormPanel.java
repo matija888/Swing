@@ -56,7 +56,7 @@ public class FormPanel extends JPanel {
                 int employeeCat = empoloyeeCategory.getId();
                 boolean isCitizen = checkCitizenship.isSelected();
 
-                FormEvent event = new FormEvent(this, name, occupation, ageCatId, employeeCat, genderCommand, isCitizen);
+                FormEvent event = new FormEvent(this, name, occupation, ageCatId, "employed", genderCommand, isCitizen);
 
                 if (formListener != null) {
                     formListener.formEventOccurred(event);

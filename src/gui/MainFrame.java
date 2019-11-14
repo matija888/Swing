@@ -15,6 +15,8 @@ public class MainFrame extends JFrame {
     private FormPanel formPanel;
     private JFileChooser fileChooser;
 
+    private TablePanel tablePanel;
+
     private Controller controller;
 
     private JMenuBar createMenuBar() {
@@ -81,8 +83,11 @@ public class MainFrame extends JFrame {
         toolbar = new Toolbar();
         textPanel = new TextPanel();
         formPanel = new FormPanel();
+        tablePanel = new TablePanel();
 
         controller = new Controller();
+
+        tablePanel.setData(controller.getPeople());
 
         fileChooser = new JFileChooser();
         fileChooser.addChoosableFileFilter(new PersonFileFilter());
@@ -100,17 +105,15 @@ public class MainFrame extends JFrame {
 
         formPanel.setFormListener(new FormListener() {
             public void formEventOccurred(FormEvent event) {
-                String msgOutput = "Name: " + event.getName() + "; Occupation: " + event.getOccupation()
-                        + "; Age category: " + event.getAgeCategory() + "; Employee category: "
-                        + event.getEmpoloyeeCategory() + "; Gender: " + event.getGender() + "\n";
-                System.out.println("isUSCitizen: " + event.isUsCitizen());
-                textPanel.appendText(msgOutput);
+                controller.addPerson(event);
+                tablePanel.refresh();
             }
         });
 
         // add components to the frame
         add(formPanel, BorderLayout.WEST);
-        add(textPanel, BorderLayout.CENTER);
+//        add(textPanel, BorderLayout.CENTER);
+        add(tablePanel, BorderLayout.CENTER);
         add(toolbar, BorderLayout.NORTH);
 
         setMinimumSize(new Dimension(500, 400));

@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
     private ArrayList<Person> people;
@@ -13,7 +14,7 @@ public class Database {
         people.add(person);
     }
 
-    public ArrayList<Person> getPeople() {
+    public List<Person> getPeople() {
         return people;
     }
 }
