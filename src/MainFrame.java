@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 public class MainFrame extends JFrame {
 
@@ -21,13 +22,33 @@ public class MainFrame extends JFrame {
         fileMenu.add(exit);
 
         JMenu windowMenu = new JMenu("Window");
-        JMenu show = new JMenu("Show");
-        JMenuItem personForm = new JMenuItem("Person form");
-        show.add(personForm);
-        windowMenu.add(show);
+        JMenu showFormItem = new JMenu("Show");
+
+        JCheckBoxMenuItem personForm = new JCheckBoxMenuItem("Person form");
+        personForm.setSelected(true);
+
+        showFormItem.add(personForm);
+        windowMenu.add(showFormItem);
 
         menuBar.add(fileMenu);
         menuBar.add(windowMenu);
+
+        personForm.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JCheckBoxMenuItem menuItem = (JCheckBoxMenuItem) e.getSource();
+                formPanel.setVisible(menuItem.isSelected());
+            }
+        });
+
+        fileMenu.setMnemonic(KeyEvent.VK_F);
+        exit.setMnemonic(KeyEvent.VK_X);
+        exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
+
+        exit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
 
         return menuBar;
     }

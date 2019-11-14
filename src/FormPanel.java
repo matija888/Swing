@@ -3,6 +3,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 public class FormPanel extends JPanel {
 
@@ -13,6 +14,7 @@ public class FormPanel extends JPanel {
     private JButton submit;
     private JList ageList;
     private JComboBox comboBox;
+    private JLabel checkCitizenshipLabel;
     private JCheckBox checkCitizenship;
     private JLabel taxIdLabel;
     private JTextField taxIdField;
@@ -33,6 +35,11 @@ public class FormPanel extends JPanel {
         setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
 
         layoutComponents();
+
+        submit.setMnemonic(KeyEvent.VK_O);
+        // define mnemonic on nameLabel (ALT+N)
+        nameLabel.setDisplayedMnemonic(KeyEvent.VK_N);
+        nameLabel.setLabelFor(nameField);
 
         submit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -158,12 +165,12 @@ public class FormPanel extends JPanel {
         gc.weightx = 1;
         gc.weighty = 0.1;
 
-        nameLabel = new JLabel("US Citizen: ");
+        checkCitizenshipLabel = new JLabel("US Citizen: ");
         gc.gridx = 0;
         gc.gridy = 4;
         gc.insets = new Insets(0, 0,0,5);
         gc.anchor = GridBagConstraints.LINE_END;
-        add(nameLabel, gc);
+        add(checkCitizenshipLabel, gc);
 
         checkCitizenship = new JCheckBox();
         gc.gridx = 1;
@@ -194,6 +201,7 @@ public class FormPanel extends JPanel {
         genderGroup = new ButtonGroup();
         maleGender = new JRadioButton("Male");
         maleGender.setActionCommand("male");
+        maleGender.setSelected(true);
 
         femaleGender = new JRadioButton("Female");
         femaleGender.setActionCommand("female");
