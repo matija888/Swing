@@ -1,6 +1,4 @@
-import javax.swing.JFrame;
-import javax.swing.JButton;
-import javax.swing.JTextArea;
+import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +9,29 @@ public class MainFrame extends JFrame {
     private TextPanel textPanel;
     private FormPanel formPanel;
 
+    private JMenuBar createMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu fileMenu = new JMenu("File");
+        JMenuItem exportData = new JMenuItem("Export data ...");
+        JMenuItem importData = new JMenuItem("Import data ...");
+        JMenuItem exit = new JMenuItem("Exit");
+        fileMenu.add(exportData);
+        fileMenu.add(importData);
+        fileMenu.add(exit);
+
+        JMenu windowMenu = new JMenu("Window");
+        JMenu show = new JMenu("Show");
+        JMenuItem personForm = new JMenuItem("Person form");
+        show.add(personForm);
+        windowMenu.add(show);
+
+        menuBar.add(fileMenu);
+        menuBar.add(windowMenu);
+
+        return menuBar;
+    }
+
     public MainFrame() {
         super("Hello");
 
@@ -18,6 +39,8 @@ public class MainFrame extends JFrame {
         toolbar = new Toolbar();
         textPanel = new TextPanel();
         formPanel = new FormPanel();
+
+        setJMenuBar(createMenuBar());
 
         // set Layout for main frame
         setLayout(new BorderLayout());
@@ -31,7 +54,7 @@ public class MainFrame extends JFrame {
         formPanel.setFormListener(new FormListener() {
             public void formEventOccurred(FormEvent event) {
                 String msgOutput = "Name: " + event.getName() + "; Occupation: " + event.getOccupation()
-                        + "; Age category: " + event.getAgeCategory() + "; Employee category: " 
+                        + "; Age category: " + event.getAgeCategory() + "; Employee category: "
                         + event.getEmpoloyeeCategory() + "; Gender: " + event.getGender() + "\n";
                 textPanel.appendText(msgOutput);
             }
@@ -39,8 +62,8 @@ public class MainFrame extends JFrame {
 
         // add components to the frame
         add(formPanel, BorderLayout.WEST);
-        add(toolbar, BorderLayout.NORTH);
         add(textPanel, BorderLayout.CENTER);
+        add(toolbar, BorderLayout.NORTH);
 
         setSize(600, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
